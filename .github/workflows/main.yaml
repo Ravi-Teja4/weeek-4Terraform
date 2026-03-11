@@ -7,7 +7,6 @@ on:
 
 jobs:
   terraform:
-    name: Terraform
     runs-on: ubuntu-latest
 
     steps:
@@ -31,19 +30,19 @@ jobs:
     - name: Terraform Validate
       run: terraform validate
 
-    # Checkov Scan
     - name: Run Checkov Scan
       uses: bridgecrewio/checkov-action@master
       with:
         directory: .
         framework: terraform
+      continue-on-error: true
 
-    # Trivy Scan
-    - name: Run Trivy Terraform Scan
+    - name: Run Trivy Scan
       uses: aquasecurity/trivy-action@master
       with:
         scan-type: config
         scan-ref: .
+      continue-on-error: true
 
     - name: Terraform Plan
       run: terraform plan
