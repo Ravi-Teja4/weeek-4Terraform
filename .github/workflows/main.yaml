@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
+
     - name: Checkout Repository
       uses: actions/checkout@v3
 
@@ -30,6 +30,20 @@ jobs:
 
     - name: Terraform Validate
       run: terraform validate
+
+    # Checkov Scan
+    - name: Run Checkov Scan
+      uses: bridgecrewio/checkov-action@master
+      with:
+        directory: .
+        framework: terraform
+
+    # Trivy Scan
+    - name: Run Trivy Terraform Scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: config
+        scan-ref: .
 
     - name: Terraform Plan
       run: terraform plan
